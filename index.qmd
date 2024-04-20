@@ -8,8 +8,8 @@ Visit the homepage at <https://vincentchong123.github.io/>
 
 updated 309pm
 
-[Airbnb](https://vincentchong123.github.io/EDA_IMF_Airbnb.html)
+[Airbnb](https://vincentchong123.github.io/EDA_IMF_Airbnb/EDA_IMF_Airbnb.html)
 
-This website is generated using [Quarto publishing](Unemployment-rate-Airbnb/EDA_IMF_Airbnb.html)
+This website is generated using [Quarto publishing](https://quarto.org/docs/publishing/github-pages.html)
 
 ## Use submodules
