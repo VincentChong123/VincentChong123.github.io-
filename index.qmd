@@ -2,8 +2,11 @@
 title: "VincentChong123.github.io"
 ---
 
+Visit the homepage at <https://vincentchong123.github.io/>
+
 ## Visualization
-updated  240pm
+
+updated 240pm
 
 [Airbnb](https://vincentchong123.github.io/EDA_IMF_Airbnb.html)
 
