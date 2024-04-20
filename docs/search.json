@@ -1,86 +1,30 @@
 [
   {
-    "objectID": "Advanced Python Practicum 2.html",
-    "href": "Advanced Python Practicum 2.html",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "Trainee Name: Chong Wei Sheng Trainee Email: weisheng.chong@digipen.edu Date Submitted: 2024 Mar 10"
+    "text": "About this site"
   },
   {
-    "objectID": "Advanced Python Practicum 2.html#general-part",
-    "href": "Advanced Python Practicum 2.html#general-part",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "General Part",
-    "text": "General Part\nLoad the required libraries.\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nimport os"
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "VincentChong123.github.io",
+    "section": "",
+    "text": "Visit the homepage at https://vincentchong123.github.io/"
   },
   {
-    "objectID": "Advanced Python Practicum 2.html#library-settings",
-    "href": "Advanced Python Practicum 2.html#library-settings",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "Library settings",
-    "text": "Library settings\n\npd.set_option(\"display.max_columns\", None)"
+    "objectID": "index.html#visualization",
+    "href": "index.html#visualization",
+    "title": "VincentChong123.github.io",
+    "section": "Visualization",
+    "text": "Visualization\nupdated 309pm\nAirbnb\nThis website is generated using Quarto publishing"
   },
   {
-    "objectID": "Advanced Python Practicum 2.html#international-monetary-fund",
-    "href": "Advanced Python Practicum 2.html#international-monetary-fund",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "International Monetary Fund",
-    "text": "International Monetary Fund\nQ1) Load the data into memory using Pandas; perform a preliminary first clean of the data and return this data.\n\nPerform standard checks such as missing data (NaN or None), datatypes, etc.\nEnsure that all the column names are of the datatype string.\nAssess whether it is necessary to remove the last two rows of the DataFrame for your specific analysis.\n\n\nimf_csv_path = \"datasets/WEOApr2020all.xlsx\"\nassert os.path.exists(imf_csv_path)\ndf = pd.read_excel(imf_csv_path)\ndf.head(2)\n\n\n## Drop columns that are not used in visualization such as notes and codes.\n\n\nredundant_col = \"WEO Country Code   ISO WEO Subject Code    Subject Notes   Units   Scale   Country/Series-specific Notes   Estimates Start After\".split(\n    \"\\t\"\n)\nredundant_col\n\n\nfor c in redundant_col:\n    if c in df.columns:\n        print(df[c].value_counts())\n        print(\"*\" * 100)\n\n\n# Todo:\n# country_info = {country: (ISO, Estimates_Start_After}\n\n\n# Drop redundant colaumns\nfor c in redundant_col:\n    if c in df.columns:\n        df.drop(columns=c, inplace=True)\n\ndf.head(2)"
-  },
-  {
-    "objectID": "Advanced Python Practicum 2.html#assess-whether-it-is-necessary-to-remove-the-last-two-rows-of-the-dataframe-for-your-specific-analysis.",
-    "href": "Advanced Python Practicum 2.html#assess-whether-it-is-necessary-to-remove-the-last-two-rows-of-the-dataframe-for-your-specific-analysis.",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "* Assess whether it is necessary to remove the last two rows of the DataFrame for your specific analysis.",
-    "text": "* Assess whether it is necessary to remove the last two rows of the DataFrame for your specific analysis.\n\nCheck missing values per row to decide any rows to discard\nDiscard row 1552 and 1553 where all elements in the rows are missing values.\n\n(df.isna().sum(axis=1) / len(df.columns)).sort_values(ascending=False)[:5]\n\n\ndf.iloc[[1553, 1552]]\n\n\ndf.drop(index=[1552, 1553], inplace=True)\n(df.isna().sum(axis=0) / df.shape[0]).sort_values(ascending=False)[:5]"
-  },
-  {
-    "objectID": "Advanced Python Practicum 2.html#perform-standard-checks-such-as-missing-data-nan-or-none-datatypes-etc.",
-    "href": "Advanced Python Practicum 2.html#perform-standard-checks-such-as-missing-data-nan-or-none-datatypes-etc.",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "* Perform standard checks such as missing data (NaN or None), datatypes, etc.",
-    "text": "* Perform standard checks such as missing data (NaN or None), datatypes, etc.\n\n# Percentage of rows with any missing data\nmiss_row = df.isna().any(axis=1)\nlen(miss_row[miss_row].index) / len(miss_row)\ndf.iloc[miss_row[miss_row].index]\n\n\nmiss_row = df.isna().any(axis=1)\nmiss_col = df.isna().any(axis=0)\ndf_mising = df[[\"Country\", \"Subject Descriptor\"] + list(miss_col[miss_col].index)].iloc[\n    miss_row[miss_row].index\n]\ndf_mising.to_csv(\"missing.csv\")\n\n\n# List countries where the missing data belongs to\ndf_mising.Country.value_counts(normalize=True).sort_values(ascending=False)"
-  },
-  {
-    "objectID": "Advanced Python Practicum 2.html#convert-column-names-to-string",
-    "href": "Advanced Python Practicum 2.html#convert-column-names-to-string",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "Convert column names to string",
-    "text": "Convert column names to string\n\nbefore = set([type(c) for c in df.columns])\n# type {type_: [c for c in df.columns if type(c) == type_] for type_ in list(set(type(c)) for c in df.columns)}\ndf.columns = map(str, list(df.columns))\nafter = set([type(c) for c in df.columns])\nprint(f\"before {before}\\nafter {after}\")\n### \\* Ensure that all the column names are of the datatype `string`.\nfor c in df.columns:\n    assert type(c) == str\n\n\nprint(df.shape)\ndf.info()"
-  },
-  {
-    "objectID": "Advanced Python Practicum 2.html#background",
-    "href": "Advanced Python Practicum 2.html#background",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "Background",
-    "text": "Background\nThis dataset is about yearly World Economic Outlook (WEO) from 2018 to 2021.\nit contains data from the World Economic Outlook that pertains to national accounts,\n\ninflation,\nunemployment rates,\nbalance of payments,\nfiscal indicators,\ntrade for countries and country groups (aggregates), and\ncommodity prices"
-  },
-  {
-    "objectID": "Advanced Python Practicum 2.html#remove-last-2-rows-removed",
-    "href": "Advanced Python Practicum 2.html#remove-last-2-rows-removed",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "Remove last 2 rows # Removed",
-    "text": "Remove last 2 rows # Removed\n\n# display(df_imf[df_imf[\"Country\"].isna()])\n# df_imf[df_imf[\"Country\"].isna()].isna().sum(axis=1)\n\n\n# df_imf = df_imf.iloc[:-2]\n# df_imf.shape\n\nQ2) Using an appropriate graph, visualize the unemployment rates from 2010 - 2019 for the 5 countries with the highest mean unemployment rates over these 10 years.\n\nAssume all NaN values are 0s (i.e. change all NaN values to 0).\nA properly labeled figure of size (13 by 10) must be displayed as the end result at the last code cell of this question.\nSave the figure with a dpi of 200 and name it imf_plot01.png (This file is to be submitted).\n\n\ndf[\"Subject Descriptor\"].unique()\n\n\n# scope down dataframe to reduce memory\ntargeted_years = list(str(y) for y in range(2010, 2020))\ndf1 = df[[\"Country\", \"Subject Descriptor\"] + targeted_years]\ndisplay(df1.head())\ndf1.info()\n\n\ndf1 = df1[df1[\"Subject Descriptor\"] == \"Unemployment rate\"]\ndisplay(df1.head(2))\ndf1.info()"
-  },
-  {
-    "objectID": "Advanced Python Practicum 2.html#check-is-there-any-year-with-unemployment-rate-of-zero-before-replacing-nan-with-zero",
-    "href": "Advanced Python Practicum 2.html#check-is-there-any-year-with-unemployment-rate-of-zero-before-replacing-nan-with-zero",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "Check is there any year with unemployment rate of zero before replacing NaN with zero",
-    "text": "Check is there any year with unemployment rate of zero before replacing NaN with zero\n\nassert not df1[targeted_years].apply(lambda x: x == 0).any(axis=0).sum()"
-  },
-  {
-    "objectID": "Advanced Python Practicum 2.html#calculate-mean-using-api-to-get-top-5-countries-rank-by-mean-of-unemployment-rate",
-    "href": "Advanced Python Practicum 2.html#calculate-mean-using-api-to-get-top-5-countries-rank-by-mean-of-unemployment-rate",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "Calculate mean using API to get top 5 countries rank by mean of unemployment rate",
-    "text": "Calculate mean using API to get top 5 countries rank by mean of unemployment rate\n\ndf1[\"Mean\"] = df1[targeted_years].mean(axis=1)\ndf1_sorted_by_mean = df1.sort_values(by=\"Mean\", ascending=False)\ndf1_sorted_by_mean"
-  },
-  {
-    "objectID": "Advanced Python Practicum 2.html#only-keep-rows-that-the-customer-are-interested",
-    "href": "Advanced Python Practicum 2.html#only-keep-rows-that-the-customer-are-interested",
-    "title": "Python Practicum 2 - Exploratory Data Analysis with Python Libraries",
-    "section": "Only keep rows that the customer are interested",
-    "text": "Only keep rows that the customer are interested\n\n\n\n\n\n\n\ndesired units\ndataframe filtering\n\n\n\n\nto rent an entire apartment,\ndf.room_type == “Entire home/ap”\n\n\nwest of Brooklyn (Red Hook, Sunset Park, Cobble Hill, Carroll Gardens and Bay Ridge)\ndf.neighbourhood.apply(lambda x: x in [“Red Hook, Sunset Park, Cobble Hill, Carroll Gardens, Bay Ridge”]\n\n\nfor a maximum of 2 weeks (14 nights).\ndf.minimum_nights.apply(lambda x: x&gt;=14\n\n\n\n\ndf = df[targeted_col]\n\n\ntarget_room_type = \"Entire home/apt\"\nif \"room_type\" in df.columns:\n    df = df[df.room_type == target_room_type].drop(columns=[\"room_type\"])\ndf.info()\n\n\ntarget_neighbourhoods = [\n    x.strip()\n    for x in \"Red Hook, Sunset Park, Cobble Hill, Carroll Gardens, Bay Ridge\".split(\",\")\n]\nprint(\"Targeted neighbourhood: \", target_neighbourhoods)\n\ndf = df[df.neighbourhood.apply(lambda x: x in target_neighbourhoods)]\n# df.info()\n# ans = list(map(lambda x: x in tuple(df.neighbourhood.unique()), target_neighbourhoods))\n# assert sum(ans) == len(target_neighbourhoods)\n\n\ndf = df[df.minimum_nights.apply(lambda x: x &lt;= 14)]\n\n\nfig, ax = plt.subplots(1, 1, figsize=(5, 5))\nplot = sns.scatterplot(df, x=\"latitude\", y=\"longitude\", hue=\"neighbourhood\", ax=ax)\nax.set_title(\"Location of AirBnB host that are candidates for the customer stay\")\nplt.legend(fontsize=\"large\")\nplt.show()\n\n\n# use integer type to save data frame memory\nimport numpy as np\n\ndf.minimum_nights = df.minimum_nights.astype(np.int8)\ndf.price = df.price.astype(np.int16)\n# df.info()\n\n\n# Get total cost of the stay for 1 to 14 nights\nm = map(lambda n: df.minimum_nights.apply(lambda x: n if n &gt;= x else 0), range(1, 15))\ndf[list(range(1, 15))] = pd.DataFrame(dict(zip(range(1, 15), m)))\ndf[list(range(1, 15))] = df[list(range(1, 15))].apply(lambda c: (c * df.price))\ndtypes = {n: np.int16 for n in range(1, 15)}\ndf[list(range(1, 15))] = df[list(range(1, 15))].astype(dtypes)\ndisplay(df)\n# df.info()"
+    "objectID": "index.html#use-submodules",
+    "href": "index.html#use-submodules",
+    "title": "VincentChong123.github.io",
+    "section": "Use submodules",
+    "text": "Use submodules"
   }
 ]
