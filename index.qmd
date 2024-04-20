@@ -2,10 +2,8 @@
 title: "VincentChong123.github.io"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
 ## Visualization
 
 [Airbnb](https://vincentchong123.github.io/EDA_IMF_Airbnb.html)
+
+This website is generated using [Quarto publishing](https://quarto.org/docs/publishing/github-pages.html)
