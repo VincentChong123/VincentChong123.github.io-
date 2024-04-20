@@ -7,13 +7,6 @@
     "text": "About this site"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "VincentChong123.github.io",
-    "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
-  },
-  {
     "objectID": "EDA_IMF_Airbnb.html",
     "href": "EDA_IMF_Airbnb.html",
     "title": "Exploratory Data Analysis with Python Libraries",
@@ -96,5 +89,19 @@
     "title": "Exploratory Data Analysis with Python Libraries",
     "section": "7.1 Only keep rows that the customer are interested",
     "text": "7.1 Only keep rows that the customer are interested\n\n\n\n\n\n\n\ndesired units\ndataframe filtering\n\n\n\n\nto rent an entire apartment,\ndf.room_type == “Entire home/ap”\n\n\nwest of Brooklyn (Red Hook, Sunset Park, Cobble Hill, Carroll Gardens and Bay Ridge)\ndf.neighbourhood.apply(lambda x: x in [“Red Hook, Sunset Park, Cobble Hill, Carroll Gardens, Bay Ridge”]\n\n\nfor a maximum of 2 weeks (14 nights).\ndf.minimum_nights.apply(lambda x: x&gt;=14\n\n\n\n\n\nCode\ndf = df[targeted_col]\n\n\n\n\nCode\ntarget_room_type = \"Entire home/apt\"\nif \"room_type\" in df.columns:\n    df = df[df.room_type == target_room_type].drop(columns=[\"room_type\"])\ndf.info()\n\n\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nIndex: 25409 entries, 1 to 48892\nData columns (total 5 columns):\n #   Column          Non-Null Count  Dtype  \n---  ------          --------------  -----  \n 0   neighbourhood   25409 non-null  object \n 1   longitude       25409 non-null  float64\n 2   price           25409 non-null  int64  \n 3   minimum_nights  25409 non-null  int64  \n 4   latitude        25409 non-null  float64\ndtypes: float64(2), int64(2), object(1)\nmemory usage: 1.2+ MB\n\n\n\n\nCode\ntarget_neighbourhoods = [\n    x.strip()\n    for x in \"Red Hook, Sunset Park, Cobble Hill, Carroll Gardens, Bay Ridge\".split(\",\")\n]\nprint(\"Targeted neighbourhood: \", target_neighbourhoods)\n\ndf = df[df.neighbourhood.apply(lambda x: x in target_neighbourhoods)]\n# df.info()\n# ans = list(map(lambda x: x in tuple(df.neighbourhood.unique()), target_neighbourhoods))\n# assert sum(ans) == len(target_neighbourhoods)\n\n\nTargeted neighbourhood:  ['Red Hook', 'Sunset Park', 'Cobble Hill', 'Carroll Gardens', 'Bay Ridge']\n\n\n\n\nCode\ndf = df[df.minimum_nights.apply(lambda x: x &lt;= 14)]\n\n\n\n\nCode\nfig, ax = plt.subplots(1, 1, figsize=(5, 5))\nplot = sns.scatterplot(df, x=\"latitude\", y=\"longitude\", hue=\"neighbourhood\", ax=ax)\nax.set_title(\"Location of AirBnB host that are candidates for the customer stay\")\nplt.legend(fontsize=\"large\")\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\nCode\n# use integer type to save data frame memory\nimport numpy as np\n\ndf.minimum_nights = df.minimum_nights.astype(np.int8)\ndf.price = df.price.astype(np.int16)\n# df.info()\n\n\n\n\nCode\n# Get total cost of the stay for 1 to 14 nights\nm = map(lambda n: df.minimum_nights.apply(lambda x: n if n &gt;= x else 0), range(1, 15))\ndf[list(range(1, 15))] = pd.DataFrame(dict(zip(range(1, 15), m)))\ndf[list(range(1, 15))] = df[list(range(1, 15))].apply(lambda c: (c * df.price))\ndtypes = {n: np.int16 for n in range(1, 15)}\ndf[list(range(1, 15))] = df[list(range(1, 15))].astype(dtypes)\ndisplay(df)\n# df.info()\n\n\n\n\n\n\n\n\n\n\nneighbourhood\nlongitude\nprice\nminimum_nights\nlatitude\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n\n\n\n\n101\nCarroll Gardens\n-74.00154\n175\n2\n40.67967\n0\n350\n525\n700\n875\n1050\n1225\n1400\n1575\n1750\n1925\n2100\n2275\n2450\n\n\n142\nCobble Hill\n-73.99183\n140\n2\n40.68570\n0\n280\n420\n560\n700\n840\n980\n1120\n1260\n1400\n1540\n1680\n1820\n1960\n\n\n168\nCarroll Gardens\n-74.00135\n165\n2\n40.67830\n0\n330\n495\n660\n825\n990\n1155\n1320\n1485\n1650\n1815\n1980\n2145\n2310\n\n\n219\nCobble Hill\n-73.99386\n159\n2\n40.68926\n0\n318\n477\n636\n795\n954\n1113\n1272\n1431\n1590\n1749\n1908\n2067\n2226\n\n\n282\nCarroll Gardens\n-73.99443\n190\n3\n40.67846\n0\n0\n570\n760\n950\n1140\n1330\n1520\n1710\n1900\n2090\n2280\n2470\n2660\n\n\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n\n\n48274\nSunset Park\n-73.99146\n250\n3\n40.66294\n0\n0\n750\n1000\n1250\n1500\n1750\n2000\n2250\n2500\n2750\n3000\n3250\n3500\n\n\n48323\nBay Ridge\n-74.03145\n125\n5\n40.63270\n0\n0\n0\n0\n625\n750\n875\n1000\n1125\n1250\n1375\n1500\n1625\n1750\n\n\n48351\nBay Ridge\n-74.02676\n200\n1\n40.62373\n200\n400\n600\n800\n1000\n1200\n1400\n1600\n1800\n2000\n2200\n2400\n2600\n2800\n\n\n48657\nSunset Park\n-74.00656\n120\n3\n40.64372\n0\n0\n360\n480\n600\n720\n840\n960\n1080\n1200\n1320\n1440\n1560\n1680\n\n\n48816\nSunset Park\n-73.98908\n100\n4\n40.66266\n0\n0\n0\n400\n500\n600\n700\n800\n900\n1000\n1100\n1200\n1300\n1400\n\n\n\n\n508 rows × 19 columns"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "VincentChong123.github.io",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "index.html#visualization",
+    "href": "index.html#visualization",
+    "title": "VincentChong123.github.io",
+    "section": "Visualization",
+    "text": "Visualization\nAirbnb"
   }
 ]
